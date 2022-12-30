@@ -23,9 +23,11 @@ func (c *UrlController) Connect(uri string) error {
 	return err
 }
 
+/*
 func (c *UrlController) InsertUrl() {
-	c.Db.Collection("URL").InsertOne(context.TODO())
+	c.Db.Collection("URL").InsertOne(context.TODO(), interface{})
 }
+*/
 
 func (c *UrlController) CreateCollection() {
 	c.Db.CreateCollection(context.Background(), "URLS")

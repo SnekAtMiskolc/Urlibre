@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	mongourl "example.com/urlibre/mongo_url"
-	//"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -21,4 +21,14 @@ func main() {
 	fmt.Println("Connected!")
 	defer controller.Client.Disconnect(context.TODO())
 	fmt.Println("Done with cleanup!")
+
+	router := gin.Default()
+
+	router.GET("/", index)
+
+	router.Run()
+}
+
+func index(ctx *gin.Context) {
+	ctx.String(200, "Hello")
 }
