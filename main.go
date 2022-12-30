@@ -30,5 +30,6 @@ func main() {
 }
 
 func index(ctx *gin.Context) {
-	ctx.String(200, "Hello")
+	ctx.String(200, "Use curl (or other http client) to send a POST request to /newurl containing the following JSON: 
+	{\"url\":\"...\",\"exp\":MAX_IS_120DAYS}")
 }
