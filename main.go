@@ -2,28 +2,23 @@ package main
 
 import (
 	"context"
+	"fmt"
 
-	"example.com/urlibre/controllers"
-	"example.com/urlibre/services"
-	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-)
-
-var (
-	server        *gin.Engine
-	urlservice    services.UrlService
-	urlcontroller controllers.UrlController
-	contex        context.Context
-	urlc          *mongo.Collection
-	mongoclient   *mongo.Client
-	err           error
+	mongourl "example.com/urlibre/mongo_url"
+	//"github.com/gin-gonic/gin"
 )
 
 func main() {
-	ctx = context.TODO()
+	mongo_uri := "mongodb://adonis:CoCk1234@localhost:27017"
 
-	mongoconn := options.Client().ApplyURI()
-	// https://piped.video/watch?v=vDIAwtGU9LE&t=3050 <- Continue mangodb X gin gonic guide
+	controller := mongourl.UrlController{}
 
+	err := controller.Connect(mongo_uri)
+
+	if err != nil {
+		panic("Error connecting to mongodb")
+	}
+	fmt.Println("Connected!")
+	defer controller.Client.Disconnect(context.TODO())
+	fmt.Println("Done with cleanup!")
 }
