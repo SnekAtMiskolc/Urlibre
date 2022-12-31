@@ -3,24 +3,20 @@ package mongourl
 import (
 	"context"
 
+	"example.com/urlibre/models"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type UrlController struct {
-	Client *mongo.Client
-	Db     *mongo.Database
+	Coll *mongo.Collection
+	Ctx  context.Context
 }
 
-func (c *UrlController) Connect(uri string) error {
-	clientOpts := options.Client().ApplyURI(uri)
-	client, err := mongo.Connect(context.TODO(), clientOpts)
-	if err == nil {
-		c.Client = client
-		db := c.Client.Database("URL")
-		c.Db = db
+func (c *UrlController) New(coll *mongo.Collection, ctx context.Context) *UrlController {
+	return &UrlController{
+		Coll: coll,
+		Ctx:  ctx,
 	}
-	return err
 }
 
 /*
@@ -29,6 +25,5 @@ func (c *UrlController) InsertUrl() {
 }
 */
 
-func (c *UrlController) CreateCollection() {
-	c.Db.CreateCollection(context.Background(), "URLS")
+func (c *UrlController) CreateUrl(urlData models.URL) {
 }
