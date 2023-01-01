@@ -1,0 +1,7 @@
+# These are defaults that should not be entered
+# since downloading these files in a browser can
+# trash your system! I am talking from experience here 
+# (thx to my classmate)
+/dev/zero
+/dev/urandom
+/dev/random
