@@ -1,7 +1,8 @@
-# These are defaults that should not be entered
-# since downloading these files in a browser can
-# trash your system! I am talking from experience here 
-# (thx to my classmate)
+# Even if you dont filter file:// at least filter 
+# these since it can trash your system!
 /dev/zero
 /dev/urandom
 /dev/random
+/dev/mem
+# Filter all files by default
+file://
