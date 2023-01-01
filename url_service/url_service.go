@@ -30,13 +30,13 @@ func (uc UrlService) newUrl(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := uc.urlController.InsertUrl(url.IntoURL())
+	newurl, err := uc.urlController.InsertUrl(url.IntoURL())
 	if err != nil {
 		ctx.Status(500)
 		return
 	}
 
-	ctx.JSON(200, url)
+	ctx.JSON(200, newurl)
 }
 
 func (uc UrlService) routeTo(ctx *gin.Context) {
