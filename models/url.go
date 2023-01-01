@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/lithammer/shortuuid/v4"
+)
 
 // Used to represent a url!
 type URL struct {
@@ -17,7 +21,7 @@ type NewURL struct {
 
 func (nu *NewURL) IntoURL() *URL {
 	return &URL{
-		ID:      "asd",
+		ID:      shortuuid.New(),
 		Url:     nu.Url,
 		Expires: addDays(nu.Expires),
 	}
