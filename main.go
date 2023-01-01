@@ -25,15 +25,23 @@ var (
 )
 
 func init() {
-	ctx = context.TODO()
+	// General CTX for most tasks
+	ctx = context.Background()
 
+	/*
+		MongoDB URI planned to just use an env in the future but since i have to
+		develop a few little features so it stays for now!
+	*/
 	mongo_uri = "mongodb://127.0.0.1:27017"
 
 	mongoconn := options.Client().ApplyURI(mongo_uri)
+
+	// Connecting to mongoDB
 	mongoclient, err = mongo.Connect(ctx, mongoconn)
 	if err != nil {
 		log.Fatal("error while connecting with mongo", err)
 	}
+	// Testing if mongo works!
 	err = mongoclient.Ping(ctx, readpref.Primary())
 	if err != nil {
 		log.Fatal("error while trying to ping mongo", err)
@@ -51,12 +59,14 @@ func main() {
 
 	router := gin.Default()
 
+	// Attach Url related Services
 	router = us.AttachUrlServices(router)
-	router.GET("/", index)
+	// Attach Index for a minimal guide for usage!
+	router.GET("/", Index)
 
 	router.Run()
 }
 
-func index(ctx *gin.Context) {
+func Index(ctx *gin.Context) {
 	ctx.String(200, "Use curl (or other http client) to send a POST request to /newurl containing the following JSON: \n{url:...,exp:MAX_IS_120DAYS}")
 }
