@@ -20,9 +20,9 @@ func (c *UrlController) New(coll *mongo.Collection, ctx context.Context) *UrlCon
 	}
 }
 
-func (c *UrlController) InsertUrl(url *models.URL) error {
+func (c *UrlController) InsertUrl(url *models.URL) (*models.URL, error) {
 	_, err := c.Coll.InsertOne(c.Ctx, url)
-	return err
+	return url, err
 }
 
 func (c *UrlController) GetUrl(urlID string) (*models.URL, error) {
