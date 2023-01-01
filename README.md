@@ -1,6 +1,9 @@
 # Urlibre
 An Open Source & minimal URL Shortener written in Go.
 
+## Database
+Urlibre uses mongoDB to store URL's!
+
 ## Fetures
  - Create URLS
  - Get redirected to said URLS
