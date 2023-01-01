@@ -2,6 +2,7 @@ package urlservice
 
 import (
 	"net/http"
+	"net/url"
 
 	"example.com/urlibre/models"
 	mongourl "example.com/urlibre/mongo_url"
@@ -24,13 +25,30 @@ func (uc UrlService) AttachUrlServices(r *gin.Engine) *gin.Engine {
 }
 
 func (uc UrlService) newUrl(ctx *gin.Context) {
-	var url models.NewURL
+	var urlS models.NewURL
 
-	if err := ctx.ShouldBindJSON(&url); err != nil {
+	if err := ctx.ShouldBindJSON(&urlS); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	newurl, err := uc.urlController.InsertUrl(url.IntoURL())
+	_, err := url.ParseRequestURI(urlS.Url)
+	if err != nil {
+		ctx.JSON(400, "The provided \"URL\" could not be parsed as a valid URL")
+		return
+	}
+	// Check if the url contains any banned words
+	passed, err := models.FilterByList(urlS.Url)
+	if err != nil {
+		ctx.Status(400)
+		return
+	}
+	// If the url didn't pass then return a 400 status code response
+	if !passed {
+		ctx.JSON(400, "The provided url contains banned words!")
+		return
+	}
+
+	newurl, err := uc.urlController.InsertUrl(urlS.IntoURL())
 	if err != nil {
 		ctx.Status(500)
 		return
