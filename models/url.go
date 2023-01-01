@@ -1,9 +1,13 @@
 package models
 
 import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
 	"time"
 
-	"github.com/lithammer/shortuuid/v4"
+	"github.com/teris-io/shortid"
 )
 
 // Used to represent a url!
@@ -21,7 +25,7 @@ type NewURL struct {
 
 func (nu *NewURL) IntoURL() *URL {
 	return &URL{
-		ID:      shortuuid.New(),
+		ID:      shortid.MustGenerate(),
 		Url:     nu.Url,
 		Expires: addDays(nu.Expires),
 	}
@@ -29,4 +33,31 @@ func (nu *NewURL) IntoURL() *URL {
 
 func addDays(days int) int64 {
 	return time.Now().AddDate(0, 0, days).Unix()
+}
+
+func FilterByList(url string) (bool, error) {
+	// Attempt to read filter.list
+	readFile, err := os.Open("filter.list")
+	if err != nil {
+		return false, err
+	}
+
+	// Create a new Scanner
+	fScanner := bufio.NewScanner(readFile)
+
+	// Scan the lines
+	fScanner.Split(bufio.ScanLines)
+
+	// Iterate trough the lines
+	for fScanner.Scan() {
+		// If url contains the pattern on the line then return false, nil
+		if strings.Contains(url, fScanner.Text()) && !strings.HasPrefix(fScanner.Text(), "#") {
+			fmt.Println(fScanner.Text())
+			return false, nil
+		}
+	}
+
+	// If all is fine then return true, nil
+	return true, nil
+
 }
