@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 var (
@@ -26,19 +27,17 @@ var (
 func init() {
 	ctx = context.TODO()
 
-	mongo_uri = "mongodb://adonis:CoCk1234@localhost:27017"
+	mongo_uri = "mongodb://127.0.0.1:27017"
 
 	mongoconn := options.Client().ApplyURI(mongo_uri)
 	mongoclient, err = mongo.Connect(ctx, mongoconn)
 	if err != nil {
 		log.Fatal("error while connecting with mongo", err)
 	}
-	/*
-		err = mongoclient.Ping(ctx, readpref.Primary())
-		if err != nil {
-			log.Fatal("error while trying to ping mongo", err)
-		}
-	*/
+	err = mongoclient.Ping(ctx, readpref.Primary())
+	if err != nil {
+		log.Fatal("error while trying to ping mongo", err)
+	}
 
 	fmt.Println("mongo connection established")
 
