@@ -68,5 +68,5 @@ func main() {
 }
 
 func Index(ctx *gin.Context) {
-	ctx.String(200, "Use curl (or other http client) to send a POST request to /newurl containing the following JSON: \n{url:...,exp:MAX_IS_120DAYS}")
+	ctx.String(200, "URLibre \n Use curl (or other http client) to send a POST request to /newurl containing the following JSON: \n{url:Hello,exp:30} \n Source Code: https://gitlab.com/GithubSucks/urlibre")
 }
