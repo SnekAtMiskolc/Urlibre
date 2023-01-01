@@ -7,6 +7,8 @@ Urlibre uses mongoDB to store URL's!
 ## Fetures
  - Create URLS
  - Get redirected to said URLS
+ - URL validation
+ - Substring filtering based on a file
  - Delete expired urls(WIP)
  - Docker(WIP)
 
