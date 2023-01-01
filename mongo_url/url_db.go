@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"example.com/urlibre/models"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -19,11 +20,14 @@ func (c *UrlController) New(coll *mongo.Collection, ctx context.Context) *UrlCon
 	}
 }
 
-/*
-func (c *UrlController) InsertUrl() {
-	c.Db.Collection("URL").InsertOne(context.TODO(), interface{})
+func (c *UrlController) InsertUrl(url *models.URL) error {
+	_, err := c.Coll.InsertOne(c.Ctx, url)
+	return err
 }
-*/
 
-func (c *UrlController) CreateUrl(urlData models.URL) {
+func (c *UrlController) GetUrl(urlID string) (*models.URL, error) {
+	var url *models.URL
+	query := bson.D{bson.E{Key: "id", Value: urlID}}
+	err := c.Coll.FindOne(c.Ctx, query).Decode(&url)
+	return url, err
 }
