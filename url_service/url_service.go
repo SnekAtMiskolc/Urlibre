@@ -2,7 +2,6 @@ package urlservice
 
 import (
 	"net/http"
-	"time"
 
 	"example.com/urlibre/models"
 	mongourl "example.com/urlibre/mongo_url"
@@ -25,32 +24,29 @@ func (uc UrlService) AttachUrlServices(r *gin.Engine) *gin.Engine {
 }
 
 func (uc UrlService) newUrl(ctx *gin.Context) {
-
-}
-
-func (uc UrlService) routeTo(ctx *gin.Context) {
-
-	var url models.URL
+	var url models.NewURL
 
 	if err := ctx.ShouldBindJSON(&url); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	controller, exists := ctx.Get("UrlController")
-	if !exists {
-		ctx.Status(500)
-		return
-	}
-	controller, ok := controller.(*mongourl.UrlController)
-	if !ok {
+	err := uc.urlController.InsertUrl(url.IntoURL())
+	if err != nil {
 		ctx.Status(500)
 		return
 	}
 
-	ctx.JSON(200, "JSON")
+	ctx.JSON(200, url)
 }
 
-func addDays(days int) int64 {
-	return time.Now().AddDate(0, 0, days).Unix()
+func (uc UrlService) routeTo(ctx *gin.Context) {
+	urlID := ctx.Param("url_id")
+
+	url, err := uc.urlController.GetUrl(urlID)
+	if err != nil {
+		ctx.Status(500)
+		return
+	}
+
+	ctx.Redirect(302, url.Url)
 }
