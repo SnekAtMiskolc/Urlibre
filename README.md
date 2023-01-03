@@ -1,4 +1,7 @@
 # Urlibre
+
+![Gohper shortening a URL](branding/Urlibre_gopher_cutting_url.png)
+
 An Open Source & minimal URL Shortener written in Go.
 
 ## Database
