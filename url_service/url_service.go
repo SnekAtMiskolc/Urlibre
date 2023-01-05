@@ -7,6 +7,7 @@ import (
 	"example.com/urlibre/models"
 	mongourl "example.com/urlibre/mongo_url"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UrlService struct {
@@ -62,6 +63,10 @@ func (uc UrlService) routeTo(ctx *gin.Context) {
 
 	url, err := uc.urlController.GetUrl(urlID)
 	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			ctx.String(404, "404 NOT FOUND!")
+			return
+		}
 		ctx.Status(500)
 		return
 	}
