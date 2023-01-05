@@ -1,8 +1,8 @@
 # Urlibre
 
-![Gohper shortening a URL](branding/Urlibre_gopher_cutting_url.png)
+A minimal & FOSS URL Shortener written in Go.
 
-An Open Source & minimal URL Shortener written in Go.
+![Gohper shortening a URL](branding/Urlibre_gopher_cutting_url.png)
 
 ## Database
 Urlibre uses mongoDB to store URL's!
@@ -12,7 +12,8 @@ Urlibre uses mongoDB to store URL's!
  - Get redirected to said URLS
  - URL validation
  - Substring filtering based on a file
- - Delete expired urls(WIP)
+ - Delete expired urls
+ - Config file/config variables(WIP)
  - Docker(WIP)
 
 ## Contributing
