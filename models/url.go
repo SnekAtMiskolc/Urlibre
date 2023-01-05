@@ -32,7 +32,7 @@ func (nu *NewURL) IntoURL() *URL {
 }
 
 func addDays(days int) int64 {
-	return time.Now().AddDate(0, 0, days).Unix()
+	return time.Now().In(time.Local).AddDate(0, 0, days).Unix()
 }
 
 func FilterByList(url string) (bool, error) {

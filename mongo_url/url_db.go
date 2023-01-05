@@ -2,10 +2,14 @@ package mongourl
 
 import (
 	"context"
+	"time"
 
 	"example.com/urlibre/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+
+	// Crontab
+	"github.com/robfig/cron"
 )
 
 type UrlController struct {
@@ -30,4 +34,18 @@ func (c *UrlController) GetUrl(urlID string) (*models.URL, error) {
 	query := bson.D{bson.E{Key: "id", Value: urlID}}
 	err := c.Coll.FindOne(c.Ctx, query).Decode(&url)
 	return url, err
+}
+
+func (c *UrlController) SetupCron() *cron.Cron {
+	cr := cron.New()
+	cr.AddFunc("0 0 * * *", func() {
+		println("RUNNING")
+		filter := bson.M{"exp": bson.M{"$lt": time.Now().Unix()}}
+
+		_, err := c.Coll.DeleteMany(c.Ctx, filter)
+		if err != nil {
+			return
+		}
+	})
+	return cr
 }
