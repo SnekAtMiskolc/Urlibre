@@ -64,6 +64,10 @@ func main() {
 	// Attach Index for a minimal guide for usage!
 	router.GET("/", Index)
 
+	cr := uc.SetupCron()
+
+	cr.Start()
+
 	router.Run()
 }
 
